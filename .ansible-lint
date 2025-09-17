@@ -1,0 +1,3 @@
+skip_list:  # or 'skip_list' to silence them completely
+  - 'name[template]' # Jinja templates should only be at the end of ‘name’.
+  - 'yaml[comments]'

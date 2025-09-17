@@ -1,0 +1,89 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for ansible-role_telegraf
+
+- name: RedHat OS family
+  when: ansible_os_family == 'RedHat'
+  block:
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: RedHat OS family block
+
+    - name: Ensure influxdata repo is installed
+      ansible.builtin.copy:
+        src: influxdata.repo
+        dest: /etc/yum.repos.d/
+        mode: "0644"
+
+    - name: Ensure telegraf is installed
+      ansible.builtin.package:
+        name: telegraf
+
+    - name: Ensure telegraf is configured
+      ansible.builtin.template:
+        src: "{{ item }}.j2"
+        dest: /etc/telegraf/telegraf.d/{{ item }}
+        mode: "0600"
+        owner: telegraf
+        group: telegraf
+      loop:
+        - influxdb2.conf
+      notify: Reload telegraf
+
+    - name: Ensure telegraf is running
+      ansible.builtin.service:
+        name: telegraf
+        state: started
+        enabled: true
+
+- name: Debian OS family
+  when: ansible_os_family == 'Debian'
+  block:
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: Debian OS family block
+
+    - name: Ensure influxdata repo is installed
+      ansible.builtin.copy:
+        src: influxdata.list
+        dest: /etc/apt/sources.list.d/
+        mode: "0644"
+
+    - name: Download InfluxData GPG key
+      ansible.builtin.get_url:
+        url: https://repos.influxdata.com/influxdata-archive_compat.key
+        dest: /usr/share/keyrings/influxdata-archive_compat.key
+        mode: '0644'
+        checksum: "sha256:393e8779c89ac8d958f81f942f9ad7fb82a25e133faddaf92e15b16e6ac9ce4c"
+
+    - name: De-armor InfluxData key
+      ansible.builtin.command:
+        cmd: gpg --dearmor -o /etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg /usr/share/keyrings/influxdata-archive_compat.key
+      args:
+        creates: /etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg
+
+    - name: Ensure telegraf is installed
+      ansible.builtin.package:
+        name: telegraf
+        update_cache: true
+
+    - name: Ensure telegraf is configured
+      ansible.builtin.template:
+        src: "{{ item }}.j2"
+        dest: /etc/telegraf/telegraf.d/{{ item }}
+        mode: "0600"
+        owner: telegraf
+        group: telegraf
+      loop:
+        - influxdb2.conf
+      notify: Reload telegraf
+
+    - name: Ensure telegraf is running
+      ansible.builtin.service:
+        name: telegraf
+        state: started
+        enabled: true
+
+...

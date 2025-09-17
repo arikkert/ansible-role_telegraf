@@ -1,0 +1,9 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for ansible-role_telegraf
+
+# these are examples, not really defaults
+urls: ["http://myinfluxdb.mydomain:8086"]
+organization: "org01"
+bucket: "telegraf"
+token: xNW1Gn2lIacmHlSjFxsOe2NeGLgPYwBkzkghNfcK7hxAUEk72qp6gF98akXUgwYhnPn-mePpeKVFdd_NZ_CNHA==
