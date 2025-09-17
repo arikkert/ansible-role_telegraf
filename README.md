@@ -14,10 +14,10 @@ Role Variables
 These are examples. Token can be generated in influxdb2 and then copied here.
 urls are a list, but typcally contain just one URL
 
-- *influx_telegraf_urls*: ["http://myinfluxdb.mydomain:8086"]
-- *influx_telegraf_organzation*: "org01"
-- *influx_telegraf_bucket*: "telegraf"
-- *influx_telegraf_token*: xNW1Gn2lIacmHlSjFxsOe2NeGLgPYwBkzkghNfcK7hxAUEk72qp6gF98akXUgwYhnPn-mePpeKVFdd_NZ_CNHA==
+- *influxdb2_telegraf_urls*: ["http://myinfluxdb.mydomain:8086"]
+- *influxdb2_telegraf_organzation*: "org01"
+- *influxdb2_telegraf_bucket*: "telegraf"
+- *influxdb2_telegraf_token*: xNW1Gn2lIacmHlSjFxsOe2NeGLgPYwBkzkghNfcK7hxAUEk72qp6gF98akXUgwYhnPn-mePpeKVFdd_NZ_CNHA==
 
 
 Dependencies
